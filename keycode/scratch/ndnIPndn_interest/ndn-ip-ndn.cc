@@ -17,6 +17,7 @@
 #include "ns3/point-to-point-module.h"
 #include "ndn-load-balancer/random-load-balancer-strategy.hpp"
 #include "NFD/daemon/fw/gatewayTunnelStrategy.hpp"
+#include "custom-app.hpp"
 
 
 
@@ -134,6 +135,7 @@ main(int argc, char* argv[])
   Ptr <SimpleUdpApplication> udp3 = CreateObject <SimpleUdpApplication> ();
   Ptr <SimpleUdpApplication> udp4 = CreateObject <SimpleUdpApplication> ();
   Ptr <SimpleUdpApplication> udp5 = CreateObject <SimpleUdpApplication> ();
+  
 
 
    //Set the start & stop times, start from 0s and end at 10s
@@ -159,7 +161,7 @@ main(int argc, char* argv[])
   nodes.Get(3)->AddApplication (udp4);
   iGate1->AddApplication(udp0);
   iGate2->AddApplication(udp5);
- 
+  
 
   //TRead from the topologies and explict the ip address for each nodes, in a same index.
   Ipv4Address dest_ip_ip0 ("10.1.1.1");
@@ -203,8 +205,7 @@ main(int argc, char* argv[])
   //Initiate the producer app
   ndn::AppHelper producerHelper("ns3::ndn::Producer");
   producerHelper.SetAttribute("PayloadSize", StringValue("1024"));
-  ndn::AppHelper gatewayHelper("ns3::ndn::GatewayApp");
-  gatewayHelper.SetPrefix("/");
+  ndn::AppHelper gatewayHelper("CustomApp");
   gatewayHelper.Install(iGate1);
 
   //producer
@@ -263,14 +264,9 @@ main(int argc, char* argv[])
   ndn::AppHelper consumerHelper1("ns3::ndn::ConsumerBatches");
   consumerHelper1.SetAttribute("Batches", StringValue("3s 1"));
   //comsumer
-  consumerHelper1.SetPrefix("/domain1/src1");
-  consumerHelper1.Install(node2);
-  ndn::AppHelper consumerHelper2("ns3::ndn::ConsumerBatches");
-  consumerHelper2.SetPrefix("/domain1/src1");
-  consumerHelper2.Install(iGate1);
-  ndn::AppHelper consumerHelper3("ns3::ndn::ConsumerBatches");
-  consumerHelper3.SetPrefix("/domain1/src1");
-  consumerHelper3.Install(node1);
+  consumerHelper1.SetPrefix("/domain1/src2");
+  //consumerHelper1.Install(node2);
+
 
   
 
@@ -282,6 +278,7 @@ main(int argc, char* argv[])
 
   LogComponentEnable ("SimpleUdpApplication", LOG_LEVEL_INFO);
   LogComponentEnable ("GatewayTunnelStrategy", LOG_LEVEL_INFO);
+  LogComponentEnable ("CustomApp", LOG_LEVEL_INFO);
   //LogComponentEnable ("Strategy", LOG_LEVEL_INFO);
 
   Simulator::Stop(Seconds(10.0));
