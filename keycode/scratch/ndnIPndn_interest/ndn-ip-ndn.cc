@@ -197,7 +197,7 @@ main(int argc, char* argv[])
   
   // Choosing forwarding strategy
   ndn::StrategyChoiceHelper::Install(ndnNodes,"/","/localhost/nfd/strategy/best-route");
-  ndn::StrategyChoiceHelper::Install<nfd::fw::GatewayTunnelStrategy>(iGate1,"/domain2/");
+  ndn::StrategyChoiceHelper::Install<nfd::fw::GatewayTunnelStrategy>(iGate1,"/tunnel/");
 
 
 
@@ -248,7 +248,7 @@ main(int argc, char* argv[])
   ndn::FibHelper::AddRoute(node2, "/domain1/test", iGate1, 20);
   ndn::FibHelper::AddRoute(node2, "/domain1/src1", iGate1, 20);
   ndn::FibHelper::AddRoute(iGate1, "/domain1/src1", node1, 20);
-   ndn::FibHelper::AddRoute(iGate1, "/domain1/test", node1, 20);
+  ndn::FibHelper::AddRoute(iGate1, "/domain1/test", node1, 20);
   ndn::FibHelper::AddRoute(iGate1, "/domain1/src2", node2, 20);
 
 /*
@@ -261,11 +261,12 @@ main(int argc, char* argv[])
   //consumerHelper0.Install(node1);
   */
 
+ //don't sent before 1 s second, i use this for gateway to send the election message
   ndn::AppHelper consumerHelper1("ns3::ndn::ConsumerBatches");
-  consumerHelper1.SetAttribute("Batches", StringValue("3s 1"));
+  consumerHelper1.SetAttribute("Batches", StringValue("3s 5"));
   //comsumer
-  consumerHelper1.SetPrefix("/domain1/src2");
-  //consumerHelper1.Install(node2);
+  consumerHelper1.SetPrefix("/tunnel/");
+  consumerHelper1.Install(node2);
 
 
   

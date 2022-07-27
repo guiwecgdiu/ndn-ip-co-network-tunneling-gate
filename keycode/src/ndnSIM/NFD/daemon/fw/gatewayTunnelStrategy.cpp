@@ -54,12 +54,32 @@ GatewayTunnelStrategy::afterReceiveInterest(const Interest& interest, const Face
                                                  const shared_ptr<pit::Entry>& pitEntry)
 {
  //JUL 25 I use prefix to identify the outgoing traffic 
-  NS_LOG_INFO(PURPLE_CODE << "AfterReveivedInterest"  << END_CODE);
-  std::string uri=interest.toUri();
-  NS_LOG_INFO(PURPLE_CODE << uri  << END_CODE);
+  NS_LOG_INFO(PURPLE_CODE << "call after receive Interest"  << END_CODE);
+  std::string name=interest.getName().getPrefix(-1).toUri();
+  NS_LOG_INFO(PURPLE_CODE << name  << END_CODE);
   //int size = m_forwarder.onIncomingData();
 
+  //JUL 27 00:16 ARNO, edit for judge weither a interest is 
+  //the Gateway app registry information
+  
+  if(interest.getName().toUri()=="/tunnel/tunnelRegisty")
+  {
+    m_RegistyApp=interest.getName();
+    NS_LOG_INFO(BLUE_CODE<<"Receive a gateway App registry interest"<<END_CODE);
+  }
 
+  if(name=="/tunnel")
+  {
+    NS_LOG_INFO(BLUE_CODE<<"Receive a gateway App tunnel interest"<<END_CODE);
+    NS_LOG_INFO(BLUE_CODE<< m_RegistyApp <<END_CODE);
+    
+    //m_forwarder.onIncomingInterest(interest,)
+    
+     
+  }
+  
+  
+  
 
 
   //NS_LOG_INFO(PURPLE_CODE << "the size of the FIB is"<< size  << END_CODE);
@@ -89,6 +109,10 @@ GatewayTunnelStrategy::afterReceiveInterest(const Interest& interest, const Face
 
   
 
+  
+  
+  
+
 
   /*
   fib::NextHopList::const_iterator selected;
@@ -103,9 +127,11 @@ GatewayTunnelStrategy::afterReceiveInterest(const Interest& interest, const Face
     }
   } while (!canForwardToNextHop(ingress.face, pitEntry, *selected));
   NFD_LOG_TRACE("afterReceiveInterest");
-  
-  this->sendInterest(interest, selected->getFace(), pitEntry);
+  this->sendInterest(interest, selected->getFace(), pitEntry);// forward out
+  this->sendInterest(interest, selected->getFace(), pitEntry);// forward out
   */
+ 
+  
 }
 
 const Name&

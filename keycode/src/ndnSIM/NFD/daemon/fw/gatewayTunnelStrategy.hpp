@@ -31,6 +31,9 @@ public:
 
 protected:
   boost::random::mt19937 m_randomGenerator;
+  Name m_RegistyApp;  
+
+
 };
 
 } // namespace fw

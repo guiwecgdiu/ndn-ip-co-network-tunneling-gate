@@ -37,10 +37,14 @@
 #include <ndn-cxx/lp/tags.hpp>
 
 #include "face/null-face.hpp"
+#define END_CODE "\033[0m"
+#define PURPLE_CODE "\033[95m"
 
+NS_LOG_COMPONENT_DEFINE("Forwarder");
 namespace nfd {
 
 NFD_LOG_INIT(Forwarder);
+
 
 const std::string CFG_FORWARDER = "forwarder";
 
@@ -97,6 +101,7 @@ void
 Forwarder::onIncomingInterest(const Interest& interest, const FaceEndpoint& ingress)
 {
   // receive Interest
+  NS_LOG_INFO(PURPLE_CODE<<"On IncomingIntrest"<<END_CODE);
   NFD_LOG_DEBUG("onIncomingInterest in=" << ingress << " interest=" << interest.getName());
   interest.setTag(make_shared<lp::IncomingFaceIdTag>(ingress.face.getId()));
   ++m_counters.nInInterests;
