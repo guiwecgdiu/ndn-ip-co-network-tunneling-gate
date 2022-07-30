@@ -159,8 +159,8 @@ main(int argc, char* argv[])
   nodes.Get(1)->AddApplication (udp2);
   nodes.Get(2)->AddApplication (udp3);
   nodes.Get(3)->AddApplication (udp4);
-  iGate1->AddApplication(udp0);
-  iGate2->AddApplication(udp5);
+  //iGate1->AddApplication(udp0);
+  //iGate2->AddApplication(udp5);
   
 
   //TRead from the topologies and explict the ip address for each nodes, in a same index.
@@ -197,7 +197,8 @@ main(int argc, char* argv[])
   
   // Choosing forwarding strategy
   ndn::StrategyChoiceHelper::Install(ndnNodes,"/","/localhost/nfd/strategy/best-route");
-  ndn::StrategyChoiceHelper::Install<nfd::fw::GatewayTunnelStrategy>(iGate1,"/tunnel/");
+  ndn::StrategyChoiceHelper::Install<nfd::fw::GatewayTunnelStrategy>(iGate1,"/");
+   ndn::StrategyChoiceHelper::Install<nfd::fw::GatewayTunnelStrategy>(iGate2,"/");
 
 
 
@@ -207,6 +208,10 @@ main(int argc, char* argv[])
   producerHelper.SetAttribute("PayloadSize", StringValue("1024"));
   ndn::AppHelper gatewayHelper("CustomApp");
   gatewayHelper.Install(iGate1);
+  ndn::AppHelper producerHelper1("ns3::ndn::Producer");
+  producerHelper1.SetAttribute("PayloadSize", StringValue("1024"));
+  ndn::AppHelper gatewayHelper1("CustomApp");
+  gatewayHelper1.Install(iGate2);
 
   //producer
   producerHelper.SetPrefix("/domain1/src1");
@@ -263,11 +268,16 @@ main(int argc, char* argv[])
 
  //don't sent before 1 s second, i use this for gateway to send the election message
   ndn::AppHelper consumerHelper1("ns3::ndn::ConsumerBatches");
-  consumerHelper1.SetAttribute("Batches", StringValue("3s 5"));
+  consumerHelper1.SetAttribute("Batches", StringValue("3s 2"));
   //comsumer
-  consumerHelper1.SetPrefix("/tunnel/");
-  consumerHelper1.Install(node2);
-
+  //consumerHelper1.SetPrefix("/tunnel/request");
+  //consumerHelper1.Install(node2);
+  consumerHelper1.SetPrefix("/domain2/dst2");
+  consumerHelper1.Install(node5);
+  ndn::AppHelper consumerHelper2("ns3::ndn::ConsumerBatches");
+  //consumerHelper1.SetAttribute("Batches", StringValue("6s 2"));
+  //consumerHelper1.SetPrefix("/tunnel/src2");
+  //consumerHelper1.Install(node1);
 
   
 

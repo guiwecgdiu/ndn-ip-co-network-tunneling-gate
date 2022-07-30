@@ -79,7 +79,10 @@ NS_LOG_COMPONENT_DEFINE("SimpleUdpApplication");
     while ((packet = socket->RecvFrom(from)))
     {
       NS_LOG_INFO(TEAL_CODE << "HandleReadOne : Received a Packet of size: " << packet->GetSize() << " at time " << Now().GetSeconds() << END_CODE);
-      NS_LOG_INFO("Content: " << packet->ToString());
+      uint8_t *buffer = new uint8_t[packet->GetSize ()];
+      packet->CopyData(buffer, packet->GetSize ());
+      std::string s = std::string((char*)buffer);
+      NS_LOG_INFO("Content: " << s);
     }
   }
 
