@@ -419,6 +419,8 @@ protected: // instance name
     m_name = name;
   }
 
+  
+
 private: // registry
   using CreateFunc = std::function<unique_ptr<Strategy>(Forwarder&, const Name& /*strategyName*/)>;
   using Registry = std::map<Name, CreateFunc>; // indexed by strategy name

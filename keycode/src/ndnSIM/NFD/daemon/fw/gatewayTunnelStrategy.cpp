@@ -61,7 +61,9 @@ GatewayTunnelStrategy::afterReceiveInterest(const Interest& interest, const Face
      NS_LOG_INFO(RED_CODE << "call after receive registy"  << END_CODE);
     m_RegistyApp=interest.getName();
     NS_LOG_INFO(BLUE_CODE<<"Receive a gateway App registry interest"<<END_CODE);
+    return;
   }
+  
 
   //JUL 30 Arno,
   //1. Read the incoming interest to get weither it a in domain traffic or out domain traffic
@@ -74,14 +76,17 @@ GatewayTunnelStrategy::afterReceiveInterest(const Interest& interest, const Face
   NS_LOG_INFO(GREEN_CODE<<interest.toUri()<<END_CODE);
   //inDomainTraffic(interest,ingress,pitEntry);
 
-  bool hasIn=hasPrefixInDomain(interest);
-  if(hasIn){
+  
+  
+  if(hasPrefixInDomain(interest)){
     NS_LOG_INFO(GREEN_CODE<<"The check with result True,in domain"<<END_CODE);
-    inDomainTraffic(interest,ingress,pitEntry);;
+    inDomainTraffic(interest,ingress,pitEntry);
   }else{
     NS_LOG_INFO(GREEN_CODE<<"The check with result False,out domain"<<END_CODE);
     outDomainTraffic(interest,ingress,pitEntry);
+    
   }
+  
   
   
 }
@@ -127,7 +132,6 @@ GatewayTunnelStrategy::outDomainTraffic(const Interest& interest, const FaceEndp
 {
   NS_LOG_INFO(BLUE_CODE<<"Receive a gateway App tunnel interest"<<END_CODE);
   NS_LOG_INFO(BLUE_CODE<< m_RegistyApp <<END_CODE);
-    
     //m_forwarder.onIncomingInterest(interest,)
   const nfd::fib::Entry& output_entry= m_forwarder.getFib().findLongestPrefixMatch(m_RegistyApp);
   const fib::NextHopList& nexthops=output_entry.getNextHops();
@@ -156,7 +160,7 @@ GatewayTunnelStrategy::hasPrefixInDomain(const Interest& interest)
     a=i->getPrefix();
     NS_LOG_INFO(YELLOW_CODE<<"Comare "<<n<<" vs "<<a<<END_CODE);
     if(interest.getName().getSubName(0,2)==  i->getPrefix())
-    { 
+    {
       return true;
     }
   }

@@ -31,6 +31,8 @@
 
 #include "utils/ndn-ns3-packet-tag.hpp"
 #include "utils/ndn-rtt-mean-deviation.hpp"
+#define PURPLE_CODE "\033[95m"
+#define END_CODE "\033[0m"
 
 #include <ndn-cxx/lp/tags.hpp>
 
@@ -217,7 +219,7 @@ Consumer::OnData(shared_ptr<const Data> data)
     return;
 
   App::OnData(data); // tracing inside
-  std::cout << "Consumer::OnData ndn-consumer.cpp 220" <<data->getName() << std::endl;
+  std::cout << PURPLE_CODE<<"Consumer::OnData ndn-consumer.cpp 220" <<data->getName() <<" at "<<GetNode()->GetId()<<END_CODE<< std::endl;
   NS_LOG_FUNCTION(this << data);
 
   // NS_LOG_INFO ("Received content object: " << boost::cref(*data));
