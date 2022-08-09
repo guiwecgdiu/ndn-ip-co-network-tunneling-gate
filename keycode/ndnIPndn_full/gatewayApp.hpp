@@ -52,10 +52,20 @@ public:
        */
       void HandleReadTwo (Ptr<Socket> socket);
 
+      /** \brief handles incoming packets on port tunnel
+       */
+      void HandleReadTunnelPort (Ptr<Socket> socket);
+
       /** \brief Send an outgoing packet. This creates a new socket every time (not the best solution)
       */
       void SendPacket (Ptr<Packet> packet, Ipv4Address destination, uint16_t port);
 
+      /** \brief Send an outgoing packet. This creates a new socket every time (not the best solution)
+      */
+      void BuildTunnel(Ipv4Address destination,uint16_t port);
+
+
+      void BeforeTunnelBuild(Ptr<Socket> socket);
 
 /////////////////////////////////////////////////
 //Gtttable
@@ -80,10 +90,6 @@ public:
 
 */
 
-    void 
-    build_Tunnel(Ipv4Address ipv4address);
-
-
 private:
   void
   SendInterest();
@@ -104,12 +110,17 @@ private:
 
   Ptr<Socket> m_recv_socket1; /**< A socket to receive on a specific port */
   Ptr<Socket> m_recv_socket2; /**< A socket to receive on a specific port */
+  Ptr<Socket> m_recv_socketTunnel;
+  Ptr<Socket> m_Tunnel_echo_socket;
   uint16_t m_port1; 
   uint16_t m_port2;
+  uint16_t m_tunnelPort;
   Ptr<Socket> m_send_socket; /**< A socket to listen on a specific port */
   GttTable m_gtt;
+  GttTable m_dtt;
 
 
+  vector<int> m_available_port{ 7007, 6006, 8008,9009, 3003,2002,1001};
   //producer set jul 26
   ndn::Name m_prefix;
   ndn::Name m_postfix;
@@ -117,6 +128,7 @@ private:
   Time m_freshness;
   uint32_t m_signature;
   ndn::Name m_keyLocator;
+
 
   //gtt table
 

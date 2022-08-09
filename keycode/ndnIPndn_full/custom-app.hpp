@@ -1,13 +1,11 @@
 // custom-app.hpp
 
-#ifndef GATEWAY_APP_H_
-#define GATEWAY_APP_H_
-
+#ifndef CUSTOM_APP_H_
+#define CUSTOM_APP_H_
 
 #include "ns3/ndnSIM/apps/ndn-app.hpp"
 #include "ns3/socket.h"
 #include "ns3/ndnSIM/model/ndn-common.hpp"
-#include "gtt.hpp"
 
 
 //new Jul 26
@@ -16,8 +14,7 @@
 #include "ns3/ndnSIM/ndn-cxx/name.hpp"
 namespace ns3 {
 
-
-class GatewayApp : public ndn::App {
+class CustomApp : public ndn::App {
 public:
   // register NS-3 type "CustomApp"
   static TypeId
@@ -57,31 +54,7 @@ public:
       void SendPacket (Ptr<Packet> packet, Ipv4Address destination, uint16_t port);
 
 
-/////////////////////////////////////////////////
-//Gtttable
-///////////////////////////////////////////////////
 
-    void 
-    Gtt_addRoute(ndn::Name prefix, Ipv4Address ipv4address);
-
-/*
- 
-  GttTable g = GttTable();
-  
-  int size=interest->getName().size();
-  g.AddRoute(interest->getName().getPrefix(size-1),"10.1.5.2");
-  g.AddRoute(ndn::Name("/app"),"10.1.5.2");
-  g.AddRoute(interest->getName().getPrefix(size-1),"10.1.5.1");
-  g.AddRoute(ndn::Name("/app2"),"10.1.5.1");
-  std::string ip= g.mapToGateIP(ndn::Name("/app2"));
-  cout<<PURPLE_CODE<<"the ip is "<<ip<<" "<<END_CODE<<std::endl;
-  g.printTheMap();
-  
-
-*/
-
-    void 
-    build_Tunnel(Ipv4Address ipv4address);
 
 
 private:
@@ -101,13 +74,11 @@ private:
 
   void 
   SetupReceiveSocket (Ptr<Socket> socket, uint16_t port);
-
   Ptr<Socket> m_recv_socket1; /**< A socket to receive on a specific port */
   Ptr<Socket> m_recv_socket2; /**< A socket to receive on a specific port */
   uint16_t m_port1; 
   uint16_t m_port2;
   Ptr<Socket> m_send_socket; /**< A socket to listen on a specific port */
-  GttTable m_gtt;
 
 
   //producer set jul 26
@@ -117,10 +88,8 @@ private:
   Time m_freshness;
   uint32_t m_signature;
   ndn::Name m_keyLocator;
-
-  //gtt table
-
 };
+
 } // namespace ns3
 
 #endif // CUSTOM_APP_H_

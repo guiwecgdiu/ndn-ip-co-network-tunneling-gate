@@ -287,10 +287,10 @@ main(int argc, char* argv[])
  //don't sent before 1 s second, i use this for gateway to send the election message
   ndn::AppHelper consumerHelper1("ns3::ndn::ConsumerBatches");
   consumerHelper1.SetAttribute("Batches", StringValue("3s 1"));
-  consumerHelper1.SetAttribute("LifeTime",StringValue("5s"));
+  consumerHelper1.SetAttribute("LifeTime",StringValue("20s"));
   //comsumer
-  consumerHelper1.SetPrefix("/domain2/dst2");
-  consumerHelper1.Install(node2);
+  consumerHelper1.SetPrefix("/domain1/src2");
+  consumerHelper1.Install(node5);
   
   
   //ndn::AppHelper consumerHelper2("ns3::ndn::ConsumerBatches");

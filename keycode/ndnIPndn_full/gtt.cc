@@ -123,4 +123,17 @@ void GttTable::printTheMap(){
     cout<<"**********************************"<<"\n"<<END_CODE;
 }
 
+void GttTable::printDTTMap(){
+     cout<<GREEN_CODE<<"**********************************"<<"\n";
+    cout<<"print the DTT table:"<<"\n";
+    for (auto x : m_GttMap) {
+        cout << x.first << " ";
+        for(auto n : x.second ){
+            cout<< n.toUri()<<" "; 
+        }
+        cout <<"\n";
+    }
+    cout<<"**********************************"<<"\n"<<END_CODE;
+}
+
 

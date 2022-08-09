@@ -25,6 +25,9 @@ public:
     HasRoute(ndn::Name prefix,ns3::Ipv4Address ipv4address);
     void
     printTheMap();
+
+    void
+    printDTTMap();
     ns3::Ipv4Address
     mapToGateIP(ndn::Name prefix);
 
