@@ -1,0 +1,36 @@
+#   /------\	                                               
+#   | Src1 |<--+                                           
+#   \------/    \                                          
+#            	 \                                            
+#                 +-->/------\ "bottleneck"./--ip---\         /--ip--\                 /------\<--+
+#                     | Rtr1 |<============>| Rtr2 |<=======>|  Rtr3 |<=============>|  Rtr4 |
+#                 +-->\------/              \------/          \-----/                 \------/<--+
+#                /                                                                                \
+#   /------\    /                                                                                  \      /----\        /-----\
+#   | Src2 |<--+                                                                                    +--->| Dst1 |+---->｜ Dst2 |                               
+#   \------/                                                                                              \----/        \-----/
+#
+#
+
+router
+# node  comment     yPos    xPos
+Src1   NA           1       3
+Src2   NA           3       3
+Rtr1   NA           2       5
+Rtr2   NA           3       7
+Rtr3   NA           2       9
+Rtr4   NA           2       11
+Dst1   NA           3       13
+Dst2   NA           3       15
+
+
+link
+
+# srcNode   dstNode     bandwidth   metric  delay   queue
+Src1        Rtr1        10Mbps      1        10ms    20
+Src2        Rtr1        10Mbps      1        10ms    20
+Rtr1        Rtr2        1Mbps       1        10ms    20
+Rtr2        Rtr3        1Mbps       1        10ms    20
+Rtr3        Rtr4        1Mbps       1        10ms    20
+Rtr4        Dst1        10Mbps      1        10ms    20
+Dst1        Dst2        10Mbps      1        10ms    20
